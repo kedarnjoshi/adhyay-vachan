@@ -1,10 +1,13 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="bin\www" type="NodeJSConfigurationType" path-to-js-file="bin/www" working-dir="$PROJECT_DIR$">
     <envs>
+      <env name="DATABASE_URL" value="postgresql://postgres:N3t7GAP7YaTd9So4@db.mmbtqzfrvtuaerszzxfz.supabase.co:6543/postgres" />
       <env name="DEBUG" value="untitled:*" />
+      <env name="SUPABASE_URL" value="https://mmbtqzfrvtuaerszzxfz.supabase.co" />
+      <env name="SUPABASE_SERVICE_ROLE_KEY" value="sb_publishable_JdBL0FD9XVV0WNdCs92rQw_vSKO4aWo" />
     </envs>
     <EXTENSION ID="com.intellij.javascript.debugger.execution.StartBrowserRunConfigurationExtension">
-      <browser url="http://localhost:3000/" />
+      <browser name="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" with-js-debugger="true" url="http://localhost:3000/" />
     </EXTENSION>
     <method v="2" />
   </configuration>
