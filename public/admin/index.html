@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    <style>
+        body {
+            font-family: "Noto Sans Devanagari", "Mangal", sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            gap: 10px
+        }
+    </style>
+</head>
+<body>
+    <table id="table_of_groups" border="black 1px"></table>
+    <button id="next_parayan">पुढचे पारायण</button>
+</body>
+
+<script>
+    const SERVER = "/"
+    const table_of_groups = document.getElementById('table_of_groups');
+    let table_heading = document.createElement('thead');
+    function toDevanagari(num) {
+        const devDigits = ['०','१','२','३','४','५','६','७','८','९'];
+        return num.toString().replace(/\d/g, d => devDigits[d]);
+    }
+    const handleClick = (groupNo => {
+        window.location.replace(SERVER+'groups?admin=true&no='+groupNo);
+    })
+    table_heading.innerHTML = "<th>समूह क्रमांक</th><th>राहिलेले अध्याय</th>";
+    table_of_groups.appendChild(table_heading);
+    fetch(SERVER+"data", {
+        method: 'GET'
+    }).then(res => res.text()).then(data => {
+        let parsed_data = JSON.parse(data)
+        for (let i = 0; i < parsed_data.length; i++) {
+            let row = document.createElement('tr');
+            let row_text = "<td>"+toDevanagari(i+1)+"</td>"
+            let incompletes = parsed_data[i].filter(person => !person.completed).map(i => toDevanagari(i.adhyay))
+            if (incompletes.length > 0) {
+                row.style.backgroundColor = "yellow";
+            }
+            else {
+                row.style.backgroundColor = "lightgreen"
+            }
+            row_text += "<td>"+incompletes+"</td>"
+            row.innerHTML = row_text;
+            row.addEventListener('click',() => handleClick(i+1));
+            table_of_groups.appendChild(row);
+        }
+    })
+
+    const new_button = document.getElementById('next_parayan');
+    new_button.addEventListener('dblclick',() => {
+        fetch(SERVER+'data/next', {
+            method: 'PATCH'
+        }).then(res => res.text()).then(data => {
+            window.location.reload();
+        })
+    });
+</script>
+</html>

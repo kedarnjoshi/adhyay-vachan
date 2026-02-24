@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <title>अध्याय वाचन</title>
+    <style>
+        body {
+            font-family: "Noto Sans Devanagari", "Mangal", sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            gap: 20px
+        }
+    </style>
+</head>
+<body id="main_body">
+    <table id="people" border="black 1px"></table>
+</body>
+
+<script>
+    const table = document.getElementById('people');
+    const root_body = document.getElementById('main_body');
+    const SERVER = '/';
+    const one_day = 24*3600*1000;
+    let table_append = "<th>क्र.</th><th>Name</th><th>अध्याय वाचन</th>"
+    let table_heading = document.createElement("thead");
+    table_heading.innerHTML = table_append;
+    table.appendChild(table_heading);
+    const paramNo = new URLSearchParams(window.location.search).get('no');
+    const handleRowClick = (person) => {
+        let admin_status = new URLSearchParams(window.location.search).get('admin');
+        if (!admin_status || admin_status !== 'true'){
+
+            let last_action = localStorage.getItem('lastAction');
+            // if (last_action) {
+            //     last_action = JSON.parse(last_action);
+            //     if (Date.now() - last_action.time < one_day
+            //         && last_action.action.completed
+            //         && last_action.action.id !== person.id) {
+            //         console.log(last_action);
+            //         return;
+            //     }
+            // }
+        }
+        person.completed = !person.completed;
+        fetch(SERVER + "data/read", {
+            method: 'PATCH',
+            headers: {
+                "Content-type": 'application/json'
+            },
+            body: JSON.stringify(person)
+        }).then(() => {
+            localStorage.setItem('lastAction', JSON.stringify({time: Date.now(), action: person}))
+            location.reload()
+        })
+
+        console.log(person)
+    }
+    function toDevanagari(num) {
+        const devDigits = ['०','१','२','३','४','५','६','७','८','९'];
+        return num.toString().replace(/\d/g, d => devDigits[d]);
+    }
+    fetch(SERVER + `data?no=`+paramNo, {
+        method: 'GET'
+
+    }).then(res => res.text().then(data => {
+        data = JSON.parse(data)
+        for (let d = 0; d < data.length; d++) {
+            const row = document.createElement("tr");
+            row.innerHTML += "<td>"+toDevanagari(d+1)+"</td>"+"<td>"+data[d].name+"</td><td style='padding: 4px'>"+(data[d].completed?"अध्याय वाचून झाला":"")+"</td>"
+            row.addEventListener("click", () => {handleRowClick(data[d]);});
+            row.style.backgroundColor = data[d].completed?"lightgreen":"yellow";
+            table.appendChild(row);
+        }
+        let admin_status = new URLSearchParams(window.location.search).get('admin');
+        console.log(admin_status)
+        if (admin_status == 'true') {
+            const button = document.createElement("button");
+            button.innerHTML = "सगळे ग्रुप"
+            button.addEventListener("click", () => {
+                window.location.replace(SERVER+'admin');
+            })
+            root_body.appendChild(button);
+        }
+    }));
+</script>
+</html>
