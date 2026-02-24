@@ -69,6 +69,7 @@
 
     }).then(res => res.text().then(data => {
         data = JSON.parse(data)
+        data.sort((a, b) => a.adhyay - b.adhyay);
         for (let d = 0; d < data.length; d++) {
             const row = document.createElement("tr");
             row.innerHTML += "<td>"+toDevanagari(d+1)+"</td>"+"<td>"+data[d].name+"</td><td style='padding: 4px'>"+(data[d].completed?"अध्याय वाचून झाला":"")+"</td>"

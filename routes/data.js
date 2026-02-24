@@ -19,37 +19,29 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SER
 module.exports = router;
 
 router.patch('/read', async (req, res) => {
-    try {
-        const {data, error} = await supabase.from('people').select('*')
-        // console.log(data);
-        var all_lists = data;
-        if (error) {
-            console.error(error);
-        }
-    } catch (err) {
-        console.error("Database error:", err);
-    }
     if (!req.body) res.status(400).send({message: 'Request must contain the body.'});
     const req_body = req.body;
     console.log(req_body);
-    let new_completed = req.body.completed
-    for (let i = 0; i < all_lists.length; i++) {
-        for (let j = 0; j < all_lists[i].length; j++) {
-            if (all_lists[i][j].id === req_body.id) {
-                all_lists[i][j].completed = new_completed;
-                res.status(200).send({message: 'Successfully changed read status to ' + new_completed});
-                return;
-            }
-        }
-    }
-    res.status(404).send({message: 'Person not found with id ' + req_body.id});
+    try {
+        const { data, error } = await supabase
+            .from('people')
+            .update(req_body) // fields to update
+            .eq('p_id', req_body.p_id); // condition to find the row
 
+        if (error) {
+            return res.status(400).json({ error: error.message });
+        }
+
+        res.json({ message: 'User updated successfully', data });
+    } catch (err) {
+        res.status(500).json({ error: 'Server error', details: err.message });
+    }
 })
 
 router.get('/', async function (req, res) {
     try {
         const {data, error} = await supabase.from('people').select('*')
-        // console.log(data);
+        console.log(data);
         var all_lists = data;
         if (error) {console.error(error);}
     } catch (err) {
