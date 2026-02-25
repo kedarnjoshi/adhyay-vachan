@@ -44,7 +44,7 @@
             let row = document.createElement('tr');
             let row_text = "<td>"+toDevanagari(i+1)+"</td>"
             let people_from_group_i = parsed_data.filter(person => person.group_id === (i+1))
-            let incompletes = people_from_group_i.filter(person => !person.completed).map(i => toDevanagari(i.adhyay))
+            let incompletes = people_from_group_i.filter(person => !person.completed).sort((a,b) => a.adhyay-b.adhyay).map(i => toDevanagari(i.adhyay))
             if (incompletes.length > 0) {
                 row.style.backgroundColor = "yellow";
             }
