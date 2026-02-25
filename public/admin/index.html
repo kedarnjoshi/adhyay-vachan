@@ -2,6 +2,7 @@
 <html lang="mr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
     <style>
         body {
@@ -39,10 +40,11 @@
         method: 'GET'
     }).then(res => res.text()).then(data => {
         let parsed_data = JSON.parse(data)
-        for (let i = 0; i < parsed_data.length; i++) {
+        for (let i = 0; i < (parsed_data.length / 21); i++) {
             let row = document.createElement('tr');
             let row_text = "<td>"+toDevanagari(i+1)+"</td>"
-            let incompletes = parsed_data[i].filter(person => !person.completed).map(i => toDevanagari(i.adhyay))
+            let people_from_group_i = parsed_data.filter(person => person.group_id === (i+1))
+            let incompletes = people_from_group_i.filter(person => !person.completed).map(i => toDevanagari(i.adhyay))
             if (incompletes.length > 0) {
                 row.style.backgroundColor = "yellow";
             }

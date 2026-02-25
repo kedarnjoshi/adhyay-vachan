@@ -41,7 +41,7 @@ router.patch('/read', async (req, res) => {
 router.get('/', async function (req, res) {
     try {
         const {data, error} = await supabase.from('people').select('*')
-        console.log(data);
+        // console.log(data);
         var all_lists = data;
         if (error) {console.error(error);}
     } catch (err) {

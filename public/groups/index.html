@@ -2,6 +2,7 @@
 <html lang="mr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>अध्याय वाचन</title>
     <style>
         body {
@@ -18,6 +19,7 @@
     </style>
 </head>
 <body id="main_body">
+    <h1 id="heading1"></h1>
     <table id="people" border="black 1px"></table>
 </body>
 
@@ -28,9 +30,12 @@
     const one_day = 24*3600*1000;
     let table_append = "<th>क्र.</th><th>Name</th><th>अध्याय वाचन</th>"
     let table_heading = document.createElement("thead");
+
     table_heading.innerHTML = table_append;
     table.appendChild(table_heading);
     const paramNo = new URLSearchParams(window.location.search).get('no');
+    let doc_heading = document.getElementById("heading1");
+    doc_heading.innerHTML = "समूह क्रमांक "+toDevanagari(paramNo);
     const handleRowClick = (person) => {
         let admin_status = new URLSearchParams(window.location.search).get('admin');
         if (!admin_status || admin_status !== 'true'){
