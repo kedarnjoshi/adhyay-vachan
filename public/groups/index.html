@@ -80,7 +80,7 @@
         for (let d = 0; d < data.length; d++) {
             const row = document.createElement("tr");
             // row.innerHTML += "<td>"+toDevanagari(d+1)+"</td>"+"<td>"+data[d].name+"</td><td style='padding: 4px'>"+(data[d].completed?"अध्याय "+toDevanagari(d+1)+" वाचून झाला":"")+"</td>"
-            row.innerHTML += "<td>"+data[d].name+"</td><td>"+toDevanagari(d+1)+"</td>"+"<td style='padding: 4px'>"+(data[d].completed?"अध्याय "+toDevanagari(d+1)+" वाचून झाला":"")+"</td>"
+            row.innerHTML += "<td>"+data[d].name+"</td><td>अध्याय "+toDevanagari(d+1)+"</td>"+"<td style='padding: 4px'>"+(data[d].completed?"वाचून झाला":"")+"</td>"
             row.addEventListener("click", () => {handleRowClick(data[d]);});
             row.style.backgroundColor = data[d].completed?"lightgreen":"yellow";
             table.appendChild(row);
