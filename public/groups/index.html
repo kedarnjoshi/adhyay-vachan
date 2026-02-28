@@ -28,7 +28,7 @@
     const root_body = document.getElementById('main_body');
     const SERVER = '/';
     const one_day = 24*3600*1000;
-    let table_append = "<th>क्र.</th><th>Name</th><th>अध्याय वाचन</th>"
+    let table_append = "<th>अध्याय क्र.</th><th>Name</th><th>अध्याय वाचन</th>"
     let table_heading = document.createElement("thead");
 
     table_heading.innerHTML = table_append;
@@ -77,7 +77,7 @@
         data.sort((a, b) => a.adhyay - b.adhyay);
         for (let d = 0; d < data.length; d++) {
             const row = document.createElement("tr");
-            row.innerHTML += "<td>"+toDevanagari(d+1)+"</td>"+"<td>"+data[d].name+"</td><td style='padding: 4px'>"+(data[d].completed?"अध्याय वाचून झाला":"")+"</td>"
+            row.innerHTML += "<td>"+toDevanagari(d+1)+"</td>"+"<td>"+data[d].name+"</td><td style='padding: 4px'>"+(data[d].completed?"अध्याय "+toDevanagari(d+1)+" वाचून झाला":"")+"</td>"
             row.addEventListener("click", () => {handleRowClick(data[d]);});
             row.style.backgroundColor = data[d].completed?"lightgreen":"yellow";
             table.appendChild(row);
